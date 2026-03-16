@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL // KAYZ ADMIN V5</title>
+    <title>TERMINAL // KAYZ ADMIN V6</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
@@ -11,7 +11,7 @@
            ========================================================================== */
         :root {
             --bg: #000000; --fg: #ffffff; --fg-dim: #888888; --border: #333333;
-            --danger: #ff4444; --success: #00ff00; --accent: #ffffff;
+            --danger: #ff4444; --success: #00ff00; --warning: #ffaa00; --accent: #ffffff;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -45,6 +45,8 @@
         .btn.danger:hover { background: var(--danger); color: var(--bg); }
         .btn.success { border-color: var(--success); color: var(--success); }
         .btn.success:hover { background: var(--success); color: var(--bg); }
+        .btn.warning { border-color: var(--warning); color: var(--warning); }
+        .btn.warning:hover { background: var(--warning); color: var(--bg); }
 
         .content-area { flex: 1; padding: 30px; overflow-y: auto; display: none; }
         .content-area.active { display: block; }
@@ -77,7 +79,7 @@
         .item-info { background: #000; padding: 8px; font-size: 10px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
         .item-info span.code { color: var(--success); }
         
-        .item-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; z-index: 2;}
+        .item-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; z-index: 2;}
         .gallery-item:hover .item-overlay { opacity: 1; }
         .badge { position: absolute; top: 5px; left: 5px; background: var(--fg); color: var(--bg); font-size: 10px; padding: 2px 6px; font-weight: bold; z-index: 2;}
 
@@ -94,7 +96,7 @@
         .log-msg.success { color: var(--success); }
         .log-msg.error { color: var(--danger); }
         .log-msg.info { color: var(--fg); }
-        .log-msg.warning { color: #ffff00; }
+        .log-msg.warning { color: var(--warning); }
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999; display: none; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
         .modal-content { border: 1px solid var(--fg); padding: 30px; background: var(--bg); max-width: 400px; text-align: center; }
@@ -111,7 +113,7 @@
 | . \ (_| | || | |_) | | |  
 |_|\_\__,_|\_, | .__/  |_|  
            |__/|_|          
-:: ADMIN TERMINAL v5.SECURE ::
+:: ADMIN TERMINAL v6.SECURE ::
         </div>
         <div class="nav-menu">
             <div class="nav-item active" data-target="dashboard">./sys_dashboard</div>
@@ -120,7 +122,7 @@
         </div>
         <div class="sys-info">
             <p>> STATUS: <span style="color:var(--success)">ONLINE (PERSISTENT)</span></p>
-            <p>> DB: IndexedDB V5</p>
+            <p>> DB: IndexedDB V6</p>
             <p>> USAGE: <span id="db-usage">Calculating...</span></p>
         </div>
     </aside>
@@ -141,9 +143,7 @@
                 <div class="stat-box"><p>Database Size</p><h2 id="stat-size">0 MB</h2></div>
             </div>
             
-            <!-- SECURE ANTI-TAMPER CONTAINER -->
             <div id="core-auth-sys"></div>
-
         </section>
 
         <!-- MEDIA -->
@@ -202,18 +202,11 @@
     </div>
 
     <script>
-        /**
-         * ==========================================================================
-         * 1. ANTI-TAMPER SECURE AUTHOR SYSTEM (OBFUSCATED)
-         * Sistem ini memastikan teks "dev rifat" tidak bisa dihapus dengan 
-         * sekadar edit HTML. Jika dihapus dari DOM, akan dibuat ulang otomatis.
-         * ==========================================================================
-         */
+        /** ANTI-TAMPER SECURE AUTHOR SYSTEM */
         (function() {
-            // "dev rifat" diencode dalam array ASCII
             const _x =[100, 101, 118, 32, 114, 105, 102, 97, 116];
             const _g = () => _x.map(c => String.fromCharCode(c)).join('');
-            const _t = `> SYSTEM AUTHOR : ${_g().toUpperCase()}\n> CORE ENGINE   : V5 PERSISTENT SECURE\n> ALL DATA IS SAFELY STORED LOCALLY.`;
+            const _t = `> SYSTEM AUTHOR : ${_g().toUpperCase()}\n> CORE ENGINE   : V6 PERSISTENT SECURE\n> ALL DATA IS SAFELY STORED LOCALLY.`;
             const _s = "border: 1px solid var(--border); padding: 20px; color: var(--success); font-size: 12px; line-height: 1.6; white-space: pre-wrap; font-weight: bold; user-select: none; pointer-events: none;";
             
             function _enforce() {
@@ -229,14 +222,9 @@
                     _b.style = _s;
                 }
             }
-            setInterval(_enforce, 500); // Check and inject every 500ms
+            setInterval(_enforce, 500);
         })();
 
-        /**
-         * ==========================================================================
-         * 2. CORE ADMIN ENGINE V5 (PERSISTENT & SECURE)
-         * ==========================================================================
-         */
         const Logger = {
             log: (msg, type = 'info') => {
                 const consoleLog = document.getElementById('console-log');
@@ -249,7 +237,7 @@
             }
         };
 
-        const DB_NAME = 'KayzTerminalDB_v5';
+        const DB_NAME = 'KayzTerminalDB_v6';
         const STORE_MEDIA = 'media_store';
         
         const IndexedDB = {
@@ -296,10 +284,10 @@
         };
 
         const Config = {
-            get: () => JSON.parse(localStorage.getItem('kayz_config_v5')) || { title: 'Kayz Pinterest', logo: '', color: '#E60023' },
-            save: (data) => localStorage.setItem('kayz_config_v5', JSON.stringify(data)),
-            getCategories: () => JSON.parse(localStorage.getItem('kayz_cats_v5')) ||['Uncategorized', 'Aesthetic', 'Anime', 'Photography'],
-            saveCategories: (data) => localStorage.setItem('kayz_cats_v5', JSON.stringify(data))
+            get: () => JSON.parse(localStorage.getItem('kayz_config_v6')) || { title: 'Kayz Pinterest', logo: '', color: '#E60023' },
+            save: (data) => localStorage.setItem('kayz_config_v6', JSON.stringify(data)),
+            getCategories: () => JSON.parse(localStorage.getItem('kayz_cats_v6')) ||['Uncategorized', 'Aesthetic', 'Anime', 'Photography'],
+            saveCategories: (data) => localStorage.setItem('kayz_cats_v6', JSON.stringify(data))
         };
 
         class TerminalApp {
@@ -310,7 +298,7 @@
                 this.modal = document.getElementById('loading-modal');
                 this.loadingText = document.getElementById('loading-sub');
                 
-                Logger.log('System V5 Secure Booting...', 'info');
+                Logger.log('System V6 Secure Booting...', 'info');
                 IndexedDB.init().then(() => {
                     Logger.log('[PERSISTENCE: OK] Local Database Mounted.', 'success');
                     this.renderCategories();
@@ -334,7 +322,6 @@
                 });
             }
 
-            // --- MANAJEMEN KATEGORI ---
             renderCategories() {
                 const select = document.getElementById('catSelect');
                 select.innerHTML = '';
@@ -361,12 +348,10 @@
                 
                 if(confirm(`Yakin ingin menghapus kategori[${cat}]?\nSemua media di dalamnya akan diubah menjadi 'Uncategorized'.`)) {
                     this.showLoading('REASSIGNING MEDIA...');
-                    // Hapus dari Array (LocalStorage Persistent)
                     this.categories = this.categories.filter(c => c !== cat);
                     Config.saveCategories(this.categories);
                     this.renderCategories();
                     
-                    // Update Media di Database (IndexedDB Persistent)
                     let count = 0;
                     for(let m of this.mediaList) {
                         if(m.category === cat) {
@@ -408,7 +393,10 @@
                         <div class="gallery-item-media">
                             ${mediaTag}
                             <div class="badge">${item.type.toUpperCase()}</div>
-                            <div class="item-overlay"><button class="btn danger" onclick="App.deleteItem('${item.id}')">[X] HAPUS</button></div>
+                            <div class="item-overlay">
+                                <button class="btn warning" onclick="App.triggerReplace('${item.id}')">[~] GANTI</button>
+                                <button class="btn danger" onclick="App.deleteItem('${item.id}')">[X] HAPUS</button>
+                            </div>
                         </div>
                         <div class="item-info">
                             <span class="code">${item.code}</span>
@@ -419,7 +407,6 @@
                 });
             }
 
-            // --- UPLOAD ---
             initUpload() {
                 const zone = document.getElementById('uploadZone');
                 const input = document.getElementById('fileInput');
@@ -440,7 +427,7 @@
                     this.loadingText.innerText = `Compressing ${i+1}/${files.length}`;
                     try {
                         const mediaObj = await this.parseFile(file, activeCat);
-                        await IndexedDB.saveMedia(mediaObj); // Persistent Save
+                        await IndexedDB.saveMedia(mediaObj);
                         Logger.log(`Assigned: ${mediaObj.code} | Saved.`, 'success');
                     } catch(err) { Logger.log(`Error: ${err}`, 'error'); }
                 }
@@ -473,6 +460,40 @@
                 });
             }
 
+            // FITUR GANTI MEDIA
+            triggerReplace(id) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*,video/mp4,image/gif';
+                input.onchange = async (e) => {
+                    if (e.target.files.length > 0) {
+                        this.showLoading('REPLACING MEDIA');
+                        try {
+                            const file = e.target.files[0];
+                            const existing = this.mediaList.find(m => m.id === id);
+                            if (!existing) throw new Error('Item not found');
+                            
+                            // Parse the new file but retain the category & IDs of existing
+                            const parsed = await this.parseFile(file, existing.category);
+                            
+                            existing.src = parsed.src;
+                            existing.type = parsed.type;
+                            existing.name = parsed.name;
+                            existing.timestamp = Date.now(); // bring to top
+                            
+                            await IndexedDB.saveMedia(existing);
+                            Logger.log(`Media Replaced successfully: ${existing.code}`, 'success');
+                            this.hideLoading();
+                            this.loadData();
+                        } catch (err) {
+                            Logger.log(`Replace Error: ${err}`, 'error');
+                            this.hideLoading();
+                        }
+                    }
+                };
+                input.click();
+            }
+
             async processUrls() {
                 const textarea = document.getElementById('urlInput');
                 const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l.length > 5);
@@ -487,7 +508,7 @@
                     else if(url.toLowerCase().includes('.gif')) type = 'gif';
 
                     const mediaObj = { id: 'u_' + Date.now(), code: this.generateCode(), category: activeCat, type: type, src: url, name: url.split('/').pop() || 'URL_Media', timestamp: Date.now() };
-                    await IndexedDB.saveMedia(mediaObj); // Persistent Save
+                    await IndexedDB.saveMedia(mediaObj);
                     Logger.log(`Assigned URL: ${mediaObj.code}`, 'success');
                 }
                 textarea.value = ''; this.hideLoading(); this.loadData();
@@ -508,7 +529,7 @@
                     logo: document.getElementById('set-logo').value || '',
                     color: document.getElementById('set-color').value || '#E60023'
                 };
-                Config.save(this.settings); // Persistent Save
+                Config.save(this.settings);
                 Logger.log('Configurator saved persistently.', 'success');
             }
 
@@ -517,7 +538,7 @@
 
             /**
              * ==========================================================================
-             * 3. HTML EXPORT ENGINE (PREMIUM PINTEREST CLONE)
+             * 3. HTML EXPORT ENGINE (PREMIUM RESPONSIVE MOBILE APP UI)
              * ==========================================================================
              */
             exportPinterestPlayer() {
@@ -534,7 +555,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>${this.settings.title}</title>
     <!-- Font Inter Premium -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -548,38 +569,55 @@
             --muted: #A3A3A3; 
             --theme: ${this.settings.color}; 
             --border: rgba(255, 255, 255, 0.08);
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent;}
         body { background: var(--bg); color: var(--text); overflow-y: scroll; -webkit-font-smoothing: antialiased; }
-        ::-webkit-scrollbar { width: 10px; } 
+        ::-webkit-scrollbar { width: 8px; } 
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; border: 2px solid var(--bg); }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
 
         /* ================= AUTH SCREEN ================= */
         #auth-screen { 
             position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at top right, rgba(230,0,35,0.15), transparent 40%), var(--bg);
+            background: radial-gradient(circle at top center, rgba(230,0,35,0.1), transparent 60%), var(--bg);
+            padding: 20px;
         }
         .auth-box { 
-            background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 50px 40px; border-radius: 24px; width: 100%; max-width: 420px; text-align: center; 
-            border: 1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+            background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 40px 30px; border-radius: 30px; width: 100%; max-width: 400px; text-align: center; 
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 60px -15px rgba(0,0,0,0.9);
         }
-        .auth-box h2 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 10px; letter-spacing: -0.5px;}
+        .auth-box h2 { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+        
+        /* Avatar Upload UI */
+        .avatar-upload-circle {
+            width: 90px; height: 90px; margin: 0 auto 24px; border-radius: 50%;
+            background: var(--card); border: 2px dashed var(--muted);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; cursor: pointer; overflow: hidden; transition: 0.3s;
+        }
+        .avatar-upload-circle:hover { border-color: var(--theme); }
+        .ava-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex;
+            align-items: center; justify-content: center; font-size: 13px; font-weight: 600;
+            opacity: 0; transition: 0.3s;
+        }
+        .avatar-upload-circle:hover .ava-overlay { opacity: 1; }
+
         .auth-input { 
-            width: 100%; padding: 16px 20px; margin-bottom: 16px; background: rgba(0,0,0,0.5); 
-            border: 1px solid #333; color: white; border-radius: 16px; outline: none; font-size: 15px; transition: 0.3s;
+            width: 100%; padding: 16px 20px; margin-bottom: 16px; background: rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 16px; outline: none; font-size: 15px; transition: 0.3s;
         }
-        .auth-input:focus { border-color: var(--theme); box-shadow: 0 0 0 4px rgba(230,0,35,0.1); }
+        .auth-input:focus { border-color: var(--theme); background: rgba(0,0,0,0.7); }
         .auth-btn { 
             width: 100%; padding: 16px; background: var(--theme); color: white; border: none; 
             border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px;
         }
         .auth-btn:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(230,0,35,0.3); }
 
-        /* ================= NAVBAR & TABS ================= */
+        /* ================= NAVBAR (DESKTOP) ================= */
         .navbar { 
             position: fixed; top: 0; left: 0; right: 0; height: 80px; background: rgba(10,10,10,0.85); 
             backdrop-filter: blur(16px); display: flex; align-items: center; 
@@ -593,127 +631,181 @@
         }
         .tab-btn.active { background: var(--text); color: var(--bg); }
         .tab-btn:hover:not(.active) { color: var(--text); }
-        @media (max-width: 768px) { .nav-tabs { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(30,30,30,0.9); backdrop-filter: blur(10px); padding: 8px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.8); z-index: 101; } .navbar { justify-content: center; } }
+
+        /* BOTTOM NAVIGATION (MOBILE) */
+        .bottom-nav { display: none; }
 
         /* ================= VIEW CONTAINER ================= */
-        .view { display: none; padding-top: 110px; min-height: 100vh; padding-bottom: 100px; animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .view { display: none; padding-top: 110px; min-height: 100vh; padding-bottom: 40px; animation: fadeIn 0.3s ease; }
         .view.active { display: block; }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ================= CINEMATIC PIN CARDS & MASONRY ================= */
         .pin-container { padding: 0 30px; column-count: 5; column-gap: 20px; max-width: 1800px; margin: 0 auto; }
         @media (max-width: 1400px) { .pin-container { column-count: 4; } } 
         @media (max-width: 1024px) { .pin-container { column-count: 3; } } 
-        @media (max-width: 600px) { .pin-container { column-count: 2; padding: 0 10px; column-gap: 10px; } }
         
         .pin-card { 
             break-inside: avoid; margin-bottom: 20px; position: relative; border-radius: 24px; 
             overflow: hidden; background: var(--card); cursor: zoom-in; transform: translateZ(0);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s;
         }
-        .pin-card img, .pin-card video { width: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .pin-card:hover img, .pin-card:hover video { transform: scale(1.05); }
+        .pin-card img, .pin-card video { width: 100%; display: block; object-fit: cover; }
         
-        .pin-overlay { 
-            position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.8) 100%);
-            display: flex; flex-direction: column; justify-content: space-between; padding: 20px; pointer-events: none;
+        /* Desktop Hover Effects */
+        @media (min-width: 769px) {
+            .pin-card img, .pin-card video { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+            .pin-card:hover img, .pin-card:hover video { transform: scale(1.05); }
+            .pin-overlay { opacity: 0; }
+            .pin-card:hover .pin-overlay { opacity: 1; }
+            .save-btn { transform: translateY(-10px); opacity: 0; }
+            .dl-btn { transform: translateY(10px); opacity: 0; }
+            .pin-card:hover .save-btn, .pin-card:hover .dl-btn { transform: translateY(0); opacity: 1; }
         }
-        .pin-card:hover .pin-overlay { opacity: 1; }
+
+        .pin-overlay { 
+            position: absolute; inset: 0; transition: opacity 0.3s ease; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.85) 100%);
+            display: flex; flex-direction: column; justify-content: space-between; padding: 16px; pointer-events: none;
+        }
         
         .top-actions { display: flex; justify-content: space-between; align-items: flex-start; }
-        .cat-badge { background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;}
+        .cat-badge { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); color: white; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .save-btn { 
-            background: var(--theme); color: white; border: none; border-radius: 24px; padding: 12px 20px; 
-            font-weight: 700; font-size: 15px; cursor: pointer; pointer-events: auto; transition: 0.2s;
-            transform: translateY(-10px); opacity: 0;
+            background: var(--theme); color: white; border: none; border-radius: 24px; padding: 10px 18px; 
+            font-weight: 700; font-size: 14px; cursor: pointer; pointer-events: auto; transition: 0.2s;
         }
-        .pin-card:hover .save-btn { transform: translateY(0); opacity: 1; }
-        .save-btn:hover { filter: brightness(1.2); }
         
         .bottom-actions { display: flex; justify-content: space-between; align-items: flex-end; }
-        .code-txt { color: white; font-weight: 700; font-size: 16px; letter-spacing: 0.5px; }
+        .code-txt { color: white; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
         .dl-btn { 
-            background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; border: none; 
-            width: 44px; height: 44px; border-radius: 50%; font-size: 20px; cursor: pointer; pointer-events: auto;
+            background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); color: white; border: none; 
+            width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; pointer-events: auto;
             display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.2s;
-            transform: translateY(10px); opacity: 0;
         }
-        .pin-card:hover .dl-btn { transform: translateY(0); opacity: 1; }
-        .dl-btn:hover { background: white; color: black; transform: scale(1.1); }
+        .dl-btn:active { background: white; color: black; transform: scale(0.9); }
 
         /* ================= SEARCH & HORIZONTAL SCROLL PILLS ================= */
-        .search-wrapper { max-width: 800px; margin: 0 auto 30px; padding: 0 30px;}
+        .search-wrapper { max-width: 800px; margin: 0 auto 20px; padding: 0 30px;}
         .search-input { 
             width: 100%; background: var(--card); border: 1px solid var(--border); color: white; 
-            padding: 18px 30px; border-radius: 40px; font-size: 16px; font-weight: 500; outline: none; transition: 0.3s;
+            padding: 16px 24px; border-radius: 40px; font-size: 15px; font-weight: 500; outline: none; transition: 0.3s;
         }
         .search-input:focus { border-color: var(--theme); background: rgba(30,30,30,0.8); }
         
-        .cat-filters-container { width: 100%; overflow-x: auto; padding: 0 30px 20px; margin-bottom: 20px; scrollbar-width: none; }
+        .cat-filters-container { width: 100%; overflow-x: auto; padding: 0 30px 20px; margin-bottom: 10px; scrollbar-width: none; }
         .cat-filters-container::-webkit-scrollbar { display: none; }
-        .cat-filters { display: flex; gap: 12px; width: max-content; margin: 0 auto;}
+        .cat-filters { display: flex; gap: 10px; width: max-content; margin: 0 auto;}
         .cat-pill { 
-            padding: 12px 24px; background: var(--card); border-radius: 30px; cursor: pointer; 
-            font-weight: 600; font-size: 14px; transition: 0.3s; border: 1px solid transparent;
+            padding: 10px 20px; background: var(--card); border-radius: 30px; cursor: pointer; 
+            font-weight: 600; font-size: 13px; transition: 0.3s; border: 1px solid transparent;
         }
-        .cat-pill:hover { background: var(--card-hover); }
-        .cat-pill.active { background: var(--theme); color: white; box-shadow: 0 4px 15px rgba(230,0,35,0.3); }
+        .cat-pill.active { background: var(--theme); color: white; }
 
         /* ================= PROFILE & BOARD COVERS ================= */
-        .profile-cover { height: 250px; background: linear-gradient(45deg, var(--card), #333); width: 100%; position: absolute; top: 0; left: 0; z-index: -1; opacity: 0.5;}
-        .profile-header { text-align: center; margin-top: 80px; margin-bottom: 50px; position: relative; }
-        .profile-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 6px solid var(--bg); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .profile-name { font-size: 36px; font-weight: 800; margin-top: 15px; letter-spacing: -1px;}
+        .profile-cover { height: 200px; background: linear-gradient(45deg, var(--card), #222); width: 100%; position: absolute; top: 0; left: 0; z-index: -1; opacity: 0.6;}
+        .profile-header { text-align: center; margin-top: 40px; margin-bottom: 40px; position: relative; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 5px solid var(--bg); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .profile-name { font-size: 28px; font-weight: 800; margin-top: 10px;}
         
-        .boards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; padding: 0 30px;}
+        .boards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; padding: 0 30px;}
         .board-card { 
-            background: var(--card); border-radius: 24px; cursor: pointer; overflow: hidden; 
+            background: var(--card); border-radius: 20px; cursor: pointer; overflow: hidden; 
             transition: 0.3s; border: 1px solid var(--border); position: relative; aspect-ratio: 4/3;
         }
-        .board-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: #555;}
-        .board-cover-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; filter: brightness(0.6); transition: 0.5s; }
-        .board-card:hover .board-cover-img { filter: brightness(0.4); transform: scale(1.05); }
-        .board-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); display: flex; flex-direction: column;}
-        .board-title { font-weight: 800; font-size: 22px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .board-count { color: var(--muted); font-size: 13px; margin-top: 4px; font-weight: 600; }
+        .board-cover-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; filter: brightness(0.6); }
+        .board-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); display: flex; flex-direction: column;}
+        .board-title { font-weight: 800; font-size: 18px; color: white; }
+        .board-count { color: var(--muted); font-size: 12px; margin-top: 4px; font-weight: 600; }
 
-        /* ================= LIGHTBOX THEATER ================= */
+        /* ================= LIGHTBOX ================= */
         #lightbox { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); 
-            z-index: 9999; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 20px; 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); 
+            z-index: 9999; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 10px; 
         }
         #lightbox.active { display: flex; opacity: 1; }
-        #lb-content { max-width: 100%; max-height: 90vh; border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); object-fit: contain; }
-        .lb-close { position: absolute; top: 20px; right: 30px; font-size: 44px; color: rgba(255,255,255,0.5); cursor: pointer; background: transparent; border: none; transition: 0.2s;}
-        .lb-close:hover { color: white; transform: rotate(90deg); }
+        #lb-content { max-width: 100%; max-height: 85vh; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); object-fit: contain; }
+        .lb-close { position: absolute; top: 20px; right: 20px; font-size: 36px; color: rgba(255,255,255,0.6); cursor: pointer; background: transparent; border: none; padding: 10px;}
+        
+        /* ================= MOBILE APP OVERRIDES ================= */
+        @media (max-width: 768px) {
+            .navbar { padding: 0 20px; height: 65px; border-bottom: none; background: rgba(10,10,10,0.95); }
+            .nav-tabs { display: none; } /* Sembunyikan tab desktop */
+            .logo-area { width: 100%; justify-content: center; } /* Logo di tengah pada HP */
+            
+            /* Bottom App Navigation */
+            .bottom-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+                height: 70px; background: rgba(15,15,15,0.98); backdrop-filter: blur(20px);
+                border-top: 1px solid rgba(255,255,255,0.05); z-index: 1000;
+                justify-content: space-around; align-items: center;
+                padding-bottom: var(--safe-bottom);
+            }
+            .b-nav-item {
+                display: flex; flex-direction: column; align-items: center; gap: 4px;
+                color: var(--muted); background: none; border: none; font-size: 10px; font-weight: 600;
+                cursor: pointer; transition: 0.3s; width: 60px;
+            }
+            .b-nav-item.active { color: var(--text); }
+            .b-nav-item.active svg { fill: var(--text); }
+            .b-nav-item svg { width: 24px; height: 24px; fill: var(--muted); transition: 0.3s;}
+
+            .view { padding-top: 80px; padding-bottom: 100px; } /* Ruang untuk bottom nav */
+            
+            /* Masonry Mobile 2 Kolom Padat */
+            .pin-container { padding: 0 10px; column-count: 2; column-gap: 10px; }
+            .pin-card { margin-bottom: 10px; border-radius: 16px; }
+            .pin-overlay { opacity: 1; padding: 12px; } /* Selalu tampil di mobile */
+            .save-btn { padding: 8px 14px; font-size: 12px; }
+            .dl-btn { width: 34px; height: 34px; font-size: 16px; }
+            .cat-badge { font-size: 9px; padding: 4px 8px; }
+            .code-txt { font-size: 12px; }
+
+            .search-wrapper { padding: 0 15px; }
+            .cat-filters-container { padding: 0 15px 15px; }
+            .boards-grid { padding: 0 15px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;}
+        }
     </style>
 </head>
 <body>
 
+    <!-- AUTH SCREEN -->
     <div id="auth-screen">
         <div class="auth-box">
-            <h2>Masuk ke ${this.settings.title}</h2>
-            <p style="color:var(--muted); font-size:15px; margin-bottom:30px;">Buat profil lokal untuk mulai mengkurasi galeri Anda.</p>
+            <h2>Bergabunglah</h2>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Buat profil lokal untuk mulai mengkurasi galeri</p>
+            
+            <!-- Avatar Upload Area -->
+            <div class="avatar-upload-circle" onclick="document.getElementById('auth-ava-file').click()">
+                <img id="ava-preview" src="https://ui-avatars.com/api/?name=U&background=222&color=fff" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                <div class="ava-overlay">+ Foto</div>
+            </div>
+            <input type="file" id="auth-ava-file" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+            
             <input type="text" id="auth-name" class="auth-input" placeholder="Nama Panggilan" autocomplete="off">
             <input type="password" id="auth-pass" class="auth-input" placeholder="Kata Sandi Rahasia">
-            <input type="text" id="auth-ava" class="auth-input" placeholder="URL Foto Profil (Opsional)">
-            <button class="auth-btn" onclick="doLogin()">Masuk / Buat Akun</button>
+            <button class="auth-btn" onclick="doLogin()">Masuk ke Aplikasi</button>
         </div>
     </div>
 
+    <!-- MAIN APP -->
     <div id="app-container" style="display:none;">
+        
+        <!-- TOP NAVBAR -->
         <nav class="navbar">
             <div class="logo-area">
                 ${navLogoHtml}
-                <span style="display:none;" id="nav-title">${this.settings.title}</span>
+                <span id="nav-title" style="display:none;">${this.settings.title}</span>
             </div>
+            <!-- Tabs Desktop -->
             <div class="nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('home')">Beranda</button>
-                <button class="tab-btn" onclick="switchTab('search')">Eksplor</button>
-                <button class="tab-btn" onclick="switchTab('profile')">Profil</button>
+                <button class="tab-btn active" onclick="switchTab('home', this)">Beranda</button>
+                <button class="tab-btn" onclick="switchTab('search', this)">Eksplor</button>
+                <button class="tab-btn" onclick="switchTab('profile', this)">Profil</button>
             </div>
         </nav>
 
+        <!-- VIEWS -->
         <div id="view-home" class="view active">
             <div class="pin-container" id="grid-home"></div>
         </div>
@@ -726,7 +818,7 @@
                 <div class="cat-filters" id="cat-filters"></div>
             </div>
             <div class="pin-container" id="grid-search"></div>
-            <div id="search-empty" style="text-align:center; color:var(--muted); display:none; margin-top:50px; font-size:18px;">Tidak ada pin yang cocok.</div>
+            <div id="search-empty" style="text-align:center; color:var(--muted); display:none; margin-top:50px; font-size:16px;">Tidak ada hasil ditemukan.</div>
         </div>
 
         <div id="view-profile" class="view" style="position:relative;">
@@ -734,19 +826,36 @@
             <div class="profile-header">
                 <img src="" id="prof-img" class="profile-img">
                 <h1 class="profile-name" id="prof-name">User</h1>
-                <p style="color:var(--muted); margin-top:8px; font-size:15px;">Kurator Estetika Digital</p>
+                <p style="color:var(--muted); margin-top:8px; font-size:14px;">Kurator Estetika Digital</p>
             </div>
             <div class="boards-grid" id="boards-list"></div>
             <div id="board-detail" style="display:none;">
-                <div style="text-align:center; margin-bottom:40px;">
-                    <h2 id="board-detail-title" style="font-size:32px; font-weight:800;">Nama Board</h2>
-                    <button onclick="closeBoard()" style="background:var(--card); border:1px solid var(--border); color:white; padding:10px 24px; border-radius:30px; margin-top:16px; cursor:pointer; font-weight:600; transition:0.2s;">&#8592; Kembali ke Papan</button>
+                <div style="text-align:center; margin-bottom:30px;">
+                    <h2 id="board-detail-title" style="font-size:26px; font-weight:800;">Nama Board</h2>
+                    <button onclick="closeBoard()" style="background:var(--card); border:1px solid var(--border); color:white; padding:10px 20px; border-radius:30px; margin-top:16px; cursor:pointer; font-weight:600;">&#8592; Kembali</button>
                 </div>
                 <div class="pin-container" id="grid-board"></div>
             </div>
         </div>
+        
+        <!-- BOTTOM NAVIGATION (MOBILE) -->
+        <nav class="bottom-nav">
+            <button class="b-nav-item active" onclick="switchTab('home', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg>
+                Beranda
+            </button>
+            <button class="b-nav-item" onclick="switchTab('search', this)">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                Eksplor
+            </button>
+            <button class="b-nav-item" onclick="switchTab('profile', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                Profil
+            </button>
+        </nav>
     </div>
 
+    <!-- LIGHTBOX -->
     <div id="lightbox" onclick="closeLightbox(event)">
         <button class="lb-close" onclick="closeLightbox(event)">&times;</button>
         <div id="lb-container"></div>
@@ -758,28 +867,41 @@
         
         let currentUser = null;
         let userBoards = {};
+        let base64Avatar = "";
+
+        /* Handle Profile Picture Upload in Auth */
+        function previewAvatar(input) {
+            if(input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64Avatar = e.target.result;
+                    document.getElementById('ava-preview').src = base64Avatar;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function initAuth() {
-            const saved = localStorage.getItem('kayz_user_v5');
+            const saved = localStorage.getItem('kayz_user_v6');
             if(saved) {
                 currentUser = JSON.parse(saved);
-                userBoards = JSON.parse(localStorage.getItem('kayz_boards_v5')) || {};
+                userBoards = JSON.parse(localStorage.getItem('kayz_boards_v6')) || {};
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-container').style.display = 'block';
                 setupProfile();
                 renderAll();
+                if(window.innerWidth > 768) document.getElementById('nav-title').style.display = 'inline';
             }
         }
 
         function doLogin() {
-            const name = document.getElementById('auth-name').value;
+            const name = document.getElementById('auth-name').value.trim();
             const pass = document.getElementById('auth-pass').value;
-            let ava = document.getElementById('auth-ava').value;
             if(!name || !pass) return alert("Nama dan Kata Sandi wajib diisi!");
-            if(!ava) ava = \`https://ui-avatars.com/api/?name=\${encodeURIComponent(name)}&background=222&color=fff&size=200\`;
-
+            
+            let ava = base64Avatar || \`https://ui-avatars.com/api/?name=\${encodeURIComponent(name)}&background=222&color=fff&size=200\`;
             currentUser = { name, pass, ava };
-            localStorage.setItem('kayz_user_v5', JSON.stringify(currentUser));
+            localStorage.setItem('kayz_user_v6', JSON.stringify(currentUser));
             initAuth();
         }
 
@@ -788,11 +910,21 @@
             document.getElementById('prof-img').src = currentUser.ava;
         }
 
-        function switchTab(tabId) {
+        function switchTab(tabId, btn) {
+            // Sembunyikan semua view
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('view-' + tabId).classList.add('active');
-            event.target.classList.add('active');
+            
+            // Atur active state untuk Desktop Tabs dan Mobile Bottom Navs
+            document.querySelectorAll('.tab-btn, .b-nav-item').forEach(b => b.classList.remove('active'));
+            
+            // Karena tombol yang ditekan bisa dari Desktop atau Mobile, kita sinkronkan keduanya
+            if(btn) {
+                const index = Array.from(btn.parentElement.children).indexOf(btn);
+                document.querySelectorAll('.nav-tabs .tab-btn')[index]?.classList.add('active');
+                document.querySelectorAll('.bottom-nav .b-nav-item')[index]?.classList.add('active');
+            }
+
             window.scrollTo({top: 0, behavior: 'smooth'});
             if(tabId === 'profile') renderBoards();
             if(tabId === 'home') renderGrid('grid-home', DB_MEDIA);
@@ -816,7 +948,9 @@
                         </div>
                         <div class="bottom-actions">
                             <span class="code-txt">\${item.code}</span>
-                            <a href="\${item.src}" download="\${dlName}" class="dl-btn" onclick="event.stopPropagation()" title="Download Media">&#11123;</a>
+                            <a href="\${item.src}" download="\${dlName}" class="dl-btn" onclick="event.stopPropagation()" title="Download Media">
+                                <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            </a>
                         </div>
                     </div>
                 \`;
@@ -869,7 +1003,7 @@
             if(!userBoards[boardName]) userBoards[boardName] =[];
             if(!userBoards[boardName].includes(mediaId)) {
                 userBoards[boardName].push(mediaId);
-                localStorage.setItem('kayz_boards_v5', JSON.stringify(userBoards));
+                localStorage.setItem('kayz_boards_v6', JSON.stringify(userBoards));
                 e.target.innerText = 'Tersimpan';
                 e.target.style.background = 'white';
                 e.target.style.color = 'black';
@@ -886,7 +1020,7 @@
 
             const boardKeys = Object.keys(userBoards);
             if(boardKeys.length === 0) {
-                list.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--muted); font-size:16px;">Belum ada papan. Simpan pin untuk mulai membuat papan kurasi Anda.</p>';
+                list.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--muted); font-size:14px;">Belum ada papan. Simpan pin untuk mulai membuat papan kurasi Anda.</p>';
                 return;
             }
 
@@ -927,7 +1061,7 @@
         }
         function closeLightbox(e) {
             if(e.target === lb || e.target.classList.contains('lb-close') || e.target.id === 'lb-content') {
-                lb.classList.remove('active'); lbC.innerHTML = ''; document.body.style.overflow = 'auto';
+                lb.classList.remove('active'); lbC.innerHTML = ''; document.body.style.overflow = '';
             }
         }
         document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox({target: lb}); });
@@ -935,7 +1069,6 @@
         function renderAll() {
             renderGrid('grid-home', DB_MEDIA);
             initSearch();
-            if(window.innerWidth > 768) document.getElementById('nav-title').style.display = 'inline';
         }
 
         initAuth();
@@ -945,10 +1078,10 @@
 
                     const blob = new Blob([HTML_TEMPLATE], { type: 'text/html;charset=utf-8' });
                     const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a'); a.href = url; a.download = `Kayz_Pinterest_Player_V5.html`;
+                    const a = document.createElement('a'); a.href = url; a.download = `Kayz_Pinterest_Player_V6.html`;
                     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
                     
-                    this.hideLoading(); Logger.log('EXPORT_PLAYER.html V5 CREATED SUCCESSFULLY.', 'success');
+                    this.hideLoading(); Logger.log('EXPORT_PLAYER.html V6 CREATED SUCCESSFULLY.', 'success');
                 }, 2000);
             }
         }
